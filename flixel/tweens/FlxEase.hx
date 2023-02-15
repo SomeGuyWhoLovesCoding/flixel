@@ -1,6 +1,9 @@
 package flixel.tweens;
+import Math;
 
 /**
+ * A new team member who joined haxeflixel coding **SomeGuyWhoLikesCoding** Just coded in new functions and methods (Also a new tween called **tail**.)
+ *
  * Static class with useful easer functions that can be used by tweens.
  *
  * Operation of in/out easers:
@@ -16,6 +19,10 @@ package flixel.tweens;
  * - **inOut(t)**
  *
  *       return (t <= .5) ? in(t * 2) / 2 : out(t * 2 - 1) / 2 + .5;
+ *
+ * - **outIn(t)**
+ *
+ *       return (t <= .5) ? out(t * 2 - 1) / 2 + .5 : in(t * 2) / 2;
  */
 class FlxEase
 {
@@ -53,6 +60,12 @@ class FlxEase
 		return t <= .5 ? t * t * 2 : 1 - (--t) * t * 2;
 	}
 
+    /** @since 5.2.2 */
+    public static inline function quadOutIn(t:Float):Float
+    {
+        return t <= .5 ? 1 - (--t) * t * 2 : t * t * 2;
+    }
+
 	public static inline function cubeIn(t:Float):Float
 	{
 		return t * t * t;
@@ -67,6 +80,12 @@ class FlxEase
 	{
 		return t <= .5 ? t * t * t * 4 : 1 + (--t) * t * t * 4;
 	}
+
+    /** @since 5.2.2 */
+    public static inline function cubeOutIn(t:Float):Float
+    {
+        return t <= .5 ? 1 + (--t) * t * t * 4 : t * t * t * 4;
+    }
 
 	public static inline function quartIn(t:Float):Float
 	{
@@ -83,6 +102,12 @@ class FlxEase
 		return t <= .5 ? t * t * t * t * 8 : (1 - (t = t * 2 - 2) * t * t * t) / 2 + .5;
 	}
 
+    /** @since 5.2.2 */
+    public static inline function quartOutIn(t:Float):Float
+    {
+        return t <= .5 ? (1 - (t = t * 2 - 2) * t * t * t) / 2 + .5 : t * t * t * t * 8;
+    }
+
 	public static inline function quintIn(t:Float):Float
 	{
 		return t * t * t * t * t;
@@ -96,6 +121,12 @@ class FlxEase
 	public static inline function quintInOut(t:Float):Float
 	{
 		return ((t *= 2) < 1) ? (t * t * t * t * t) / 2 : ((t -= 2) * t * t * t * t + 2) / 2;
+	}
+
+    /** @since 5.2.2 */
+    public static inline function quintOutIn(t:Float):Float
+	{
+		return ((t *= 2) < 1) ? ((t -= 2) * t * t * t * t + 2) / 2 : (t * t * t * t * t) / 2;
 	}
 
 	/** @since 4.3.0 */
@@ -210,6 +241,12 @@ class FlxEase
 		return t <= .5 ? (Math.sqrt(1 - t * t * 4) - 1) / -2 : (Math.sqrt(1 - (t * 2 - 2) * (t * 2 - 2)) + 1) / 2;
 	}
 
+    /** @since 5.2.2 */
+    public static function circOutIn(t:Float):Float
+    {
+        return t <= .5 ? (Math.sqrt(1 - (t * 2 - 2) * (t * 2 - 2)) + 1) / 2 : (Math.sqrt(1 - t * t * 4) - 1) / -2;
+    }
+
 	public static inline function expoIn(t:Float):Float
 	{
 		return Math.pow(2, 10 * (t - 1));
@@ -223,6 +260,36 @@ class FlxEase
 	public static function expoInOut(t:Float):Float
 	{
 		return t < .5 ? Math.pow(2, 10 * (t * 2 - 1)) / 2 : (-Math.pow(2, -10 * (t * 2 - 1)) + 2) / 2;
+	}
+
+    /** @since 5.2.2 */
+    public static function expoOutIn(t:Float):Float
+    {
+        return t < .5 ? (-Math.pow(2, -10 * (t * 2 - 1)) + 2) / 2 : Math.pow(2, 10 * (t * 2 - 1)) / 2;
+    }
+
+	/** @since 5.2.2 */
+	public static inline function tailIn(t:Float):Float
+	{
+		return --t * 3;
+	}
+
+	/** @since 5.2.2 */
+	public static inline function tailOut(t:Float):Float
+	{
+		return --t / 3;
+	}
+
+	/** @since 5.2.2 */
+	public static inline function tailInOut(t:Float):Float
+	{
+		return t <= .5 ? --t * 3 : --t / 3;
+	}
+
+	/** @since 5.2.2 */
+	public static inline function tailOutIn(t:Float):Float
+	{
+		return t <= 1.5 ? --t / 3 : --t * 3;
 	}
 
 	public static inline function backIn(t:Float):Float
@@ -265,6 +332,11 @@ class FlxEase
 		}
 		return Math.pow(2, -10 * (t -= 0.5)) * Math.sin((t - (ELASTIC_PERIOD / 4)) * (2 * Math.PI) / ELASTIC_PERIOD) * 0.5 + 1;
 	}
+
+    public static function custom(t:Float):Float
+    {
+        return t / Math.cos(-t) * -2; // Edit this line to make your own tween!!
+    }
 }
 
 typedef EaseFunction = Float->Float;
